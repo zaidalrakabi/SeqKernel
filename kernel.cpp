@@ -14,5 +14,6 @@ int main(int argc, char* argv[]){
 void readBL62(double *bl62[], argv[0]){
 	memset(bl62, 0, 20*sizeof(double));
 	ifstream inf(argv[1);
+        //notes
 
 }	
