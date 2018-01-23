@@ -40,7 +40,9 @@ void readBL62(double* bl62[], char* matrix, double beta, short* indexMap) {
         for (int j = 0; j < 20; j++) {
             inf >> bl62[i][j];
             bl62[i][j] = pow(bl62[i][j], beta);
+            cout << bl62[i][j] << ","; //debug
         } //read every value in the line, store the value^beta in matrix
+        cout << "EOL" << endl; //debug (End of Line)
     } //get every line, get rid of beginning letter
 
  } //readBL62() 
