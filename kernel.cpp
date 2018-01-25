@@ -10,7 +10,7 @@ using namespace std;
 
 void readBL62(double* bl62[], string matrix, double beta, short* letterToIndexMap);
 double computeK1(double *bl62[]);
-void readInput(string matrix, string b, string seq1, string seq2);
+void readInput(string matrix, char* b, string seq1, string seq2);
 string readSequence(string s);
 double computeK1(double* bl62[], short* indexMap, string seq1, string seq2);
 
@@ -20,24 +20,24 @@ int main(int argc, char* argv[]) {
    	return 0;
 } //main()
 
-void readInput(string matrix, string b, string seq1, string seq2){
+void readInput(string matrix, char* b, string seq1, string seq2){
 	double *bl62[20];
 	short indexMap[150]; //plug in letter, get index in bl62
-	string beta(b);
+	char* beta(b);
 	double sum1; //sum of first kernel
 
-	readBL62(bl62, matrix, stod(beta), indexMap);//stod error
+	readBL62(bl62, matrix, atof(beta), indexMap);//stod error
 	seq1 = readSequence(seq1);
-	cout<< seq1<< endl;
+	cout<< seq1<< endl;//test print
 	seq2 = readSequence(seq2);
-	cout<< seq2<< endl;
+	cout<< seq2<< endl;//test print
 
 	sum1 = computeK1(bl62,indexMap, seq1, seq2);//computes the first kernel
-	cout<< sum1;
+	cout<< sum1;//test print
 }//readInput()
 
 string readSequence(string s){
-	//reads sequence from .fa file and returns string
+	//reads sequence from file and returns string
 	// of all the letters of the sequence. 
 	string seqstr= "";
 	string tempstr= "";
