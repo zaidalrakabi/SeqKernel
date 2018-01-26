@@ -12,7 +12,7 @@ void readBL62(double* bl62[], string matrix, double beta, short* letterToIndexMa
 double computeK1(double *bl62[]);
 void readInput(string matrix, char* b, string seq1, string seq2);
 string readSequence(string s);
-double computeK1(double* bl62[], short* indexMap, string seq1, string seq2);
+double sumK(double* bl62[], short* indexMap, string seq1, string seq2, int k);
 
 int main(int argc, char* argv[]) {
     //run with: exec.out bl62.txt Beta=0.01 seq1 seq2
@@ -32,7 +32,7 @@ void readInput(string matrix, char* b, string seq1, string seq2){
 	seq2 = readSequence(seq2);
 	cout<< seq2<< endl;//test print
 
-	sum1 = computeK1(bl62,indexMap, seq1, seq2);//computes the first kernel
+	//sum1 = computeK1(bl62,indexMap, seq1, seq2);//computes the first kernel
 	cout<< sum1;//test print
 }//readInput()
 
@@ -78,16 +78,23 @@ void readBL62(double* bl62[], string matrix, double beta, short* indexMap) {
 
  } //readBL62() 
 
-double computeK1(double* bl62[], short* indexMap, string seq1, string seq2){
+double sumK(double* bl62[], short* indexMap, string seq1, string seq2, int k){
  //computes the first Kernel by comparing a single letter from
  //seq1 and seq2 and finding the bl62 value of the amino acids
  double sum;// sum of k1 values for all the single letter pairs
  unsigned int s1_size = seq1.length();
- unsigned int s2_size = seq2.length(); 
- for(unsigned int i =0; i < s1_size; i++){//warning message
-	 for(unsigned int j = 0; j < s2_size; j++){
-		sum= sum + bl62[indexMap[seq1[i]]][indexMap[seq2[j]]];
-	 }
+ unsigned int s2_size = seq2.length();
+
+ for(unsigned int i = 0; i < s1_size - k; i++){//warning message
+
+	 for(unsigned int j = 0; j < s2_size - k; j++){
+         double temp = 1;
+
+         for (unsigned int l = 0; l < k; l++) {
+             temp = temp * bl62[indexMap[seq1[i] + l]][indexMap[seq2[j] + l]];
+         }	
+         sum = sum + temp;
+     }
  }
 
 	return sum;
