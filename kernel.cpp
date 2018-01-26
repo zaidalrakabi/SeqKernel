@@ -12,9 +12,7 @@ void readBL62(double* bl62[], string matrix, double beta, short* letterToIndexMa
 double computeKhat(double *bl62[], short* indexMap, string seq1, string seq2);
 void readInput(string matrix, char* b, string seq1, string seq2);
 string readSequence(string s);
-
 double computeK(double* bl62[], short* indexMap, string seq1, string seq2);
-
 double sumK(double* bl62[], short* indexMap, string seq1, string seq2, int k);
 
 
@@ -29,14 +27,15 @@ void readInput(string matrix, char* b, string seq1, string seq2){
 	short indexMap[150]; //plug in letter, get index in bl62
 	char* beta(b);
 	double khat; //normalized score for 2 protein sequences similarity
+	double dist; //dist = 0 means the sequences are similar, dist = 1 means they are not similar
 
 	readBL62(bl62, matrix, atof(beta), indexMap);
 	seq1 = readSequence(seq1);
 	seq2 = readSequence(seq2);
 
-
 	khat = computeKhat(bl62,indexMap, seq1, seq2);//computes khat
-	cout<< khat;//test print
+	dist = sqrt(2*(1 - khat)); //computes distance of khat for score of similarity
+	cout<<"distance: " <<  dist << endl;//test print
 
 }//readInput()
 
@@ -75,26 +74,26 @@ void readBL62(double* bl62[], string matrix, double beta, short* indexMap) {
         for (int j = 0; j < 20; j++) {
             inf >> bl62[i][j];
             bl62[i][j] = pow(bl62[i][j], beta);
-            cout << bl62[i][j] << ","; //debug
+         //test print:   cout << bl62[i][j] << ","; //debug
         } //read every value in the line, store the value^beta in matrix
-        cout << "EOL" << endl; //debug (End of Line)
+       //test print: cout << "EOL" << endl; //debug (End of Line)
     } //get every line, get rid of beginning letter
 
  } //readBL62()
 
 double computeKhat(double* bl62[], short* indexMap, string seq1, string seq2){
 	//computes a normalized score for the K value using the formula for Khat
-	double kST, kSS, kTT, kH;
+	double kST, kSS, kTT, kH, d;
 
 	kST= computeK(bl62, indexMap, seq1, seq2);
 	kSS= computeK(bl62, indexMap, seq1, seq1);
 	kTT= computeK(bl62, indexMap, seq2, seq2);
 	kSS= kSS * kTT;
 
-	kH= (kST/sqrt(kSS));
-
+	kH= (kST/sqrt(kSS));//formula: k(s1,s2)/sqrt(k(s1,s1)*k(s2,s2))
+	
 	return kH;
-}
+}//computeKhat
 
 double computeK(double* bl62[], short* indexMap, string seq1, string seq2){
  //computes all the Kernels by comparing a single letter from
@@ -106,32 +105,32 @@ double computeK(double* bl62[], short* indexMap, string seq1, string seq2){
 
  double total_K = 0;
  for(int k = 1; k<= s_max; k++){//find sum for all k values up to s_max
-	 sum = sumK(seq1, seq2, bl62, k);
+	 sum = sumK(bl62, indexMap, seq1, seq2, k);
 	 total_K += sum; 
  }
   return total_K;
-}
+}//computeK()
 
 double sumK(double* bl62[], short* indexMap, string seq1, string seq2, int k){
- //computes the first Kernel by comparing a single letter from
- //seq1 and seq2 and finding the bl62 value of the amino acids
- double sum;// sum of k1 values for all the single letter pairs
+ //computes the sum of kth Kernel by comparing a k elements of the sequence
+ //using seq1 and seq2 and finding the bl62 value of the amino acids
+ double sum;// sum of amino acid values for all the k letter pairs
  unsigned int s1_size = seq1.length();
  unsigned int s2_size = seq2.length();
 
- for(unsigned int i = 0; i < s1_size - k; i++){//warning message
+ for(unsigned int i = 0; i < (s1_size - k); i++){//warning message
 
-	 for(unsigned int j = 0; j < s2_size - k; j++){
+	 for(unsigned int j = 0; j < (s2_size -k); j++){
          double temp = 1;
 
-         for (unsigned int l = 0; l < k; l++) {
-             temp = temp * bl62[indexMap[seq1[i] + l]][indexMap[seq2[j] + l]];
+         for (int l = 0; l < k; l++) {
+             temp = temp * bl62[indexMap[seq1[i+ l]]][indexMap[seq2[j+ l]]];
          }	
          sum = sum + temp;
      }
 
  }
 
-	return total_K;
-} //computeK()
+	return sum;
+} //sumK()
 
