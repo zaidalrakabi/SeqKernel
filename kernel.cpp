@@ -1,6 +1,11 @@
 /*
  * kernel.cpp Sequence Kernel Program 
  * By: Zaid Al Rakabi and Munir Nur
+ * git hub repo: https://github.com/zaidalrakabi/ECS129_P4
+ * To run this program type the following in the command field:
+ * ./a.out bl62.txt 0.01 (seqence 1 filename) (sequence 2 filename)
+ * Run on CSIF not MAC to avoid errors
+ * To compile: g++ -g kernel.cpp
 */
 #include <iostream>
 #include <fstream>
