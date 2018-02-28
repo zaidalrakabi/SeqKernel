@@ -1,3 +1,7 @@
+/*
+ * kernel.cpp Sequence Kernel Program 
+ * By: Zaid Al Rakabi and Munir Nur
+*/
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -32,11 +36,16 @@ void readInput(string matrix, char* b, string seq1, string seq2){
 	readBL62(bl62, matrix, atof(beta), indexMap);
 	seq1 = readSequence(seq1);
 	seq2 = readSequence(seq2);
+	
+	clock_t begin= clock();
 
 	khat = computeKhat(bl62,indexMap, seq1, seq2);//computes khat
-	dist = sqrt(2*(1 - khat)); //computes distance of khat for score of similarity
-	cout<<"distance: " <<  dist << endl;//test print
 
+	dist = sqrt(2*(1 - khat)); //computes distance of khat for score of similarity
+
+	clock_t end= clock();
+	cout<<"distance: " <<  dist << endl;//print distance
+	cout << "CPU time: " << (double)(end - begin) / CLOCKS_PER_SEC << endl;//print time
 }//readInput()
 
 string readSequence(string s){
