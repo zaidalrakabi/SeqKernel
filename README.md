@@ -12,6 +12,6 @@ To compile:
 To run:
 	type "./a.out bl62.txt 0.01 (sequence 1 filename) (sequence 2 filename)" into the command line
 	
-	(B= 0.01 is our tested beta-value, for our unweighted String Kernel and bl62.txt is the BLOSUM scoring matrix)
+	(0.01 is our tested beta-value, for our unweighted String Kernel and bl62.txt is the BLOSUM scoring matrix)
 
 
